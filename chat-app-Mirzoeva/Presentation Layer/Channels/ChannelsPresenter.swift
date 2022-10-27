@@ -12,6 +12,7 @@ import CoreData
 protocol ChannelsPresenter {
     func loadChats(completion: @escaping ([ChannelModel]) -> Void)
     func addChannel(channelName: String?)
+    func deleteChannel(channelId: String)
 }
 
 class ChannelsPresenterImpl: ChannelsPresenter {
@@ -46,10 +47,17 @@ class ChannelsPresenterImpl: ChannelsPresenter {
     
     func addChannel(channelName: String?) {
         var newChannel: [String: Any] {
-            [L10n.CoreData.name: channelName ?? L10n.unknownChannelName]
+            [L10n.CoreData.name: channelName ?? L10n.unknownChannelName,
+            L10n.CoreData.lastActivity: Timestamp(date: Date())]
         }
         DispatchQueue.main.async {
             self.reference.addDocument(data: newChannel)
+        }
+    }
+    
+    func deleteChannel(channelId: String) {
+        DispatchQueue.main.async {
+            self.reference.document(channelId).delete()
         }
     }
     

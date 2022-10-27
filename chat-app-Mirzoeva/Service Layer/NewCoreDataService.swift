@@ -6,6 +6,7 @@
 //
 
 import CoreData
+import UIKit
 
 final class NewCoreDataService: CoreDataService {
     private lazy var container: NSPersistentContainer = {
@@ -33,6 +34,7 @@ final class NewCoreDataService: CoreDataService {
             return try container.viewContext.fetch(fetchRequest)
         } catch {
             print(error.localizedDescription)
+            print(#function)
         }
         return []
     }
@@ -45,6 +47,7 @@ final class NewCoreDataService: CoreDataService {
            return try container.viewContext.fetch(fetchRequest)
         } catch {
             print(error.localizedDescription)
+            print(#function)
         }
         return []
     }
@@ -60,6 +63,7 @@ final class NewCoreDataService: CoreDataService {
             return channel
         } catch {
             print(error.localizedDescription)
+            print(#function)
         }
         return DBChannel()
     }
@@ -74,8 +78,23 @@ final class NewCoreDataService: CoreDataService {
                     try context.save()
                 } catch {
                     print(error.localizedDescription)
+                    print(#function)
                 }
             }
+        }
+    }
+    
+    func deleteAllData(_ entity:String) {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        fetchRequest.returnsObjectsAsFaults = false
+        do {
+            let results = try container.viewContext.fetch(fetchRequest)
+            for object in results {
+                guard let objectData = object as? NSManagedObject else {continue}
+                container.viewContext.delete(objectData)
+            }
+        } catch let error {
+            print("Detele all data in \(entity) error :", error)
         }
     }
 }

@@ -16,37 +16,22 @@ final class ProfileViewController: UIViewController {
     
     // MARK: - Properties
 
-    private var profileImageView = UIImageView()
+    private let photoInfoVC = ChatPhotoInfoViewController()
+    private let profileInfo = ChatProfileInfoView(frame: .zero)
+    private let headerView = UIView()
+
     private var activityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.large)
     private var closeButton = UIBarButtonItem()
 
-    private let usernameTextField = UITextField()
-    private let userInfoTextField = UITextField()
-    private let editInfoButton = UIButton()
-    private let editUserPhotoButton = UIButton()
-    private let cancelEditInfoButton = UIButton()
-    private let saveGCDButton = UIButton()
+    private let editInfoButton = ChatActionButton()
+    private let cancelEditInfoButton = ChatActionButton()
+    private let saveGCDButton = ChatActionButton()
     private let gcdFileManager: SettingsFileManagerProtocol
 
     private lazy var tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
     private lazy var longTapGesture = UILongPressGestureRecognizer(target: self, action: #selector(startTinkoffAnimation))
     
-    private lazy var tinkoffCell: CAEmitterCell = {
-        var tinkoffCell = CAEmitterCell()
-        tinkoffCell.contents = UIImage(named: "tinkoff_logo")?.cgImage
-        tinkoffCell.scale = 0.01
-        tinkoffCell.scaleRange = 0.01
-        tinkoffCell.emissionRange = .pi
-        tinkoffCell.lifetime = 20.0
-        tinkoffCell.birthRate = 20
-        tinkoffCell.velocity = -30
-        tinkoffCell.yAcceleration = 30
-        tinkoffCell.xAcceleration = 5
-        tinkoffCell.spin = -0.5
-        tinkoffCell.spinRange = 1.0
-        return tinkoffCell
-    }()
-    
+    private lazy var tinkoffCell = ChatEmitterCell()
     private lazy var emittedLayer: CAEmitterLayer = {
         var tinkoffLayer = CAEmitterLayer()
         tinkoffLayer.emitterSize = CGSize(width: view.bounds.width / 10, height: 0)
@@ -87,7 +72,7 @@ final class ProfileViewController: UIViewController {
         apper.backgroundColor = ThemeManager.currentTheme.backgroundColor
         self.view.backgroundColor = ThemeManager.currentTheme.backgroundColor
         closeButton.tintColor = ThemeManager.currentTheme.secondaryColor
-        editUserPhotoButton.setTitleColor(ThemeManager.currentTheme.secondaryColor, for: .normal)
+        photoInfoVC.editButton.setTitleColor(ThemeManager.currentTheme.secondaryColor, for: .normal)
         
         [editInfoButton, cancelEditInfoButton, saveGCDButton].forEach {
             $0.backgroundColor = ThemeManager.currentTheme.buttonColor
@@ -97,8 +82,6 @@ final class ProfileViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
-        profileImageView.layer.masksToBounds = true
     }
     
     // MARK: - Private
@@ -109,54 +92,6 @@ final class ProfileViewController: UIViewController {
     
     @objc private func hideKeyboard() {
         view.endEditing(true)
-    }
-    
-    private func readUserInfoData() {
-        gcdFileManager.readData { [weak self] user in
-            guard let self = self else { return }
-            self.usernameTextField.text = user.name
-            self.userInfoTextField.text = user.description
-            guard let image = user.imageData else { return }
-            self.profileImageView.image = UIImage(data: image, scale: 1.0)
-        }
-    }
-    
-    private func addActionsMenu() -> UIMenu {
-        let photoAction = UIAction(
-            title: L10n.Photo.takePhoto,
-            image: UIImage(systemSymbol: .camera)
-        ) { [weak self] _ in
-            self?.openSystemCamera()
-        }
-        
-        let albumAction = UIAction(
-            title: L10n.Photo.openGallery,
-            image: UIImage(systemSymbol: .photoOnRectangle)
-        ) { [weak self] _ in
-            self?.openGallery()
-        }
-        
-        let menuActions = [photoAction, albumAction]
-        let addNewMenu = UIMenu(children: menuActions)
-        return addNewMenu
-    }
-    
-    private func openSystemCamera() {
-        didTappedEditInfoButton()
-        let pickerController = UIImagePickerController()
-        pickerController.delegate = self
-        pickerController.allowsEditing = true
-        pickerController.sourceType = .camera
-        present(pickerController, animated: true)
-    }
-    
-    private func openGallery() {
-        didTappedEditInfoButton()
-        let pickerController = UIImagePickerController()
-        pickerController.delegate = self
-        pickerController.sourceType = .photoLibrary
-        pickerController.modalPresentationStyle = .fullScreen
-        present(pickerController, animated: true)
     }
     
     private func hideSaveButtons() {
@@ -176,28 +111,14 @@ final class ProfileViewController: UIViewController {
     }
     
     @objc private func didTappedEditInfoButton() {
-        [userInfoTextField, usernameTextField].forEach {
-            $0.isUserInteractionEnabled = true
-        }
-        usernameTextField.becomeFirstResponder()
+        profileInfo.isEditing = true
         hideEditButton()
         saveGCDButton.isEnabled = false
     }
     
     private func showSuccessAlert() {
-        let alert = UIAlertController(
-            title: L10n.Alert.success,
-            message: nil,
-            preferredStyle: .alert
-        )
-        let ok = UIAlertAction(
-            title: L10n.ok,
-            style: .default) { [weak self] _ in
-                self?.hideSaveButtons()
-        }
-        alert.addAction(ok)
-        present(alert, animated: true)
-        
+        presentGFAlertOnMainThread(title: "", message: L10n.Alert.success, buttonTitle: L10n.ok)
+        hideSaveButtons()
     }
     
     private func showFailureAlert() {
@@ -228,53 +149,14 @@ final class ProfileViewController: UIViewController {
         hideSaveButtons()
     }
     
-    private func saveInfo(saveMethod: SettingsFileManagerProtocol) {
-        activityIndicator.startAnimating()
-        saveGCDButton.isEnabled = false
-        let userInfoData = UserInfo(
-            name: usernameTextField.text,
-            description: userInfoTextField.text,
-            imageData: profileImageView.image?.pngData())
-        
-        saveMethod.saveData(
-            user: userInfoData,
-            completion: { [weak self] result in
-                self?.activityIndicator.stopAnimating()
-                switch result {
-                case true:
-                    self?.showSuccessAlert()
-                case false:
-                    self?.showFailureAlert()
-                }
-            }
-        )
-    }
-    
     @objc private func didTapSaveGCDButton() {
         saveInfo(saveMethod: gcdFileManager)
-    }
-    
-    @objc private func showPickingOptions() {
-        didTappedEditInfoButton()
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let photoAction = UIAlertAction(title: L10n.Photo.takePhoto, style: .default, handler: { [weak self] _ in
-            self?.openSystemCamera()
-        })
-        let galleryAction = UIAlertAction(title: L10n.Photo.openGallery, style: .default, handler: { [weak self] _ in
-            self?.openGallery()
-        })
-        let cancel = UIAlertAction(title: L10n.cancel, style: .cancel, handler: nil)
-        [photoAction, galleryAction, cancel].forEach {
-            alert.addAction($0)
-        }
-        present(alert, animated: true)
     }
 }
 
 // MARK: - Setup UI and Layout
 
 private extension ProfileViewController {
-    
     @objc func startTinkoffAnimation(sender: UILongPressGestureRecognizer) {
         switch sender.state {
         case .ended:
@@ -285,7 +167,7 @@ private extension ProfileViewController {
         }
     }
     
-     func setupNavigationBar() {
+    private func setupNavigationBar() {
         closeButton = UIBarButtonItem(title: L10n.close, style: .done, target: self, action: #selector(closeProfileVC))
         let containerLeftView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 400))
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 250, height: 40))
@@ -297,13 +179,9 @@ private extension ProfileViewController {
         navigationItem.rightBarButtonItem = closeButton
     }
 
-     func setupEditingButtons() {
+    private func setupEditingButtons() {
         [cancelEditInfoButton, saveGCDButton].forEach {
             $0.isHidden = true
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.titleLabel?.font = .systemFont(ofSize: 19, weight: .regular)
-            $0.layer.cornerRadius = 14
-            $0.layer.masksToBounds = true
             view.addSubview($0)
         }
         
@@ -328,13 +206,9 @@ private extension ProfileViewController {
         )
     }
 
-     func setupEditInfoButton() {
-        editInfoButton.translatesAutoresizingMaskIntoConstraints = false
+    private func setupEditInfoButton() {
         view.addSubview(editInfoButton)
-        editInfoButton.titleLabel?.font = .systemFont(ofSize: 19, weight: .regular)
         editInfoButton.setTitle(L10n.edit, for: .normal)
-        editInfoButton.layer.cornerRadius = 14
-        editInfoButton.layer.masksToBounds = true
         editInfoButton.addTarget(self, action: #selector(didTappedEditInfoButton), for: .touchUpInside)
         
         NSLayoutConstraint.activate(
@@ -347,72 +221,84 @@ private extension ProfileViewController {
         )
     }
     
-     func setupActivityIndicator() {
+    private func setupActivityIndicator() {
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(activityIndicator)
         activityIndicator.color = ThemeManager.currentTheme.titleTextColor
-        activityIndicator.topAnchor.constraint(equalTo: userInfoTextField.bottomAnchor, constant: 20).isActive = true
+        activityIndicator.topAnchor.constraint(equalTo: profileInfo.bottomAnchor, constant: 20).isActive = true
         activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
-     func setupUserInfo() {
-        [profileImageView, usernameTextField, userInfoTextField, editUserPhotoButton].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview($0)
-        }
-        
-        editUserPhotoButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular)
-        editUserPhotoButton.setTitle(L10n.change, for: .normal)
-        if #available(iOS 14.0, *) {
-            editUserPhotoButton.menu = addActionsMenu()
-            editUserPhotoButton.showsMenuAsPrimaryAction = true
-        } else {
-            editUserPhotoButton.addTarget(self, action: #selector(showPickingOptions), for: .touchUpInside)
-        }
-        
-        [usernameTextField, userInfoTextField].forEach {
-            $0.delegate = self
-            $0.textColor = ThemeManager.currentTheme.titleTextColor
-            $0.isUserInteractionEnabled = false
-        }
-        
-        profileImageView.contentMode = .scaleAspectFill
-        profileImageView.backgroundColor = .systemGray6
-        
-        usernameTextField.font = .systemFont(ofSize: 24, weight: .regular)
-        usernameTextField.autocapitalizationType = .words
-        usernameTextField.textAlignment = .center
-        usernameTextField.attributedPlaceholder = NSAttributedString(
-            string: L10n.TextFieldPlaceholders.name,
-            attributes: [NSAttributedString.Key.foregroundColor: ThemeManager.currentTheme.titleTextColor]
-        )
-        
-        userInfoTextField.font = .systemFont(ofSize: 16, weight: .regular)
-        userInfoTextField.attributedPlaceholder = NSAttributedString(
-            string: L10n.TextFieldPlaceholders.status,
-            attributes: [NSAttributedString.Key.foregroundColor: ThemeManager.currentTheme.titleTextColor]
-        )
+     private func add(childVC: UIViewController, to containerView: UIView) {
+        addChild(childVC)
+        containerView.addSubview(childVC.view)
+        childVC.view.frame = containerView.bounds
+        childVC.didMove(toParent: self)
+    }
+    
+     private func setupUserInfo() {
+         [headerView, profileInfo].forEach {
+             view.addSubview($0)
+             $0.translatesAutoresizingMaskIntoConstraints = false
+         }
+         self.add(childVC: photoInfoVC, to: self.headerView)
+         
+         [profileInfo.usernameTextField, profileInfo.userInfoTextField].forEach {
+             $0.delegate = self
+         }
         setupLayoutUserInfoConstraints()
     }
     
-     func setupLayoutUserInfoConstraints() {
+    private func setupLayoutUserInfoConstraints() {
         NSLayoutConstraint.activate(
             [
-                profileImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 7),
-                profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                profileImageView.widthAnchor.constraint(equalToConstant: 240),
-                profileImageView.heightAnchor.constraint(equalToConstant: 240),
+                headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+                headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+                headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 7),
+                headerView.heightAnchor.constraint(equalToConstant: 300),
                 
-                usernameTextField.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 32),
-                usernameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                usernameTextField.widthAnchor.constraint(equalToConstant: 240),
-                
-                userInfoTextField.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor, constant: 32),
-                userInfoTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                
-                editUserPhotoButton.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: -10),
-                editUserPhotoButton.trailingAnchor.constraint(equalTo: profileImageView.trailingAnchor)
+                profileInfo.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 32),
+                profileInfo.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                profileInfo.widthAnchor.constraint(equalToConstant: 240),
+                profileInfo.heightAnchor.constraint(equalToConstant: 150)
             ]
+        )
+    }
+}
+
+// MARK: - Data
+
+extension ProfileViewController {
+    
+    private func readUserInfoData() {
+        gcdFileManager.readData { [weak self] user in
+            guard let self = self else { return }
+            self.profileInfo.usernameTextField.text = user.name
+            self.profileInfo.userInfoTextField.text = user.description
+            guard let image = user.imageData else { return }
+            self.photoInfoVC.photoView.image = UIImage(data: image, scale: 1.0)
+        }
+    }
+    
+    private func saveInfo(saveMethod: SettingsFileManagerProtocol) {
+        activityIndicator.startAnimating()
+        saveGCDButton.isEnabled = false
+        let userInfoData = UserInfo(
+            name: profileInfo.usernameTextField.text,
+            description: profileInfo.userInfoTextField.text,
+            imageData: photoInfoVC.photoView.image?.pngData())
+        
+        saveMethod.saveData(
+            user: userInfoData,
+            completion: { [weak self] result in
+                self?.activityIndicator.stopAnimating()
+                switch result {
+                case true:
+                    self?.showSuccessAlert()
+                case false:
+                    self?.showFailureAlert()
+                }
+            }
         )
     }
 }
@@ -429,22 +315,4 @@ extension ProfileViewController: UITextFieldDelegate {
         return textField.text?.isEmpty == false
     }
 }
-
-extension ProfileViewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        var newImage: UIImage
-        
-        if let possibleImage = info[.editedImage] as? UIImage {
-            newImage = possibleImage
-        } else if let possibleImage = info[.originalImage] as? UIImage {
-            newImage = possibleImage
-        } else {
-            return
-        }
-        
-        profileImageView.image = newImage
-        dismiss(animated: true)
-    }
-}
-
 

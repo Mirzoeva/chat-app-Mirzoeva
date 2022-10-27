@@ -9,13 +9,12 @@ import Foundation
 import UIKit
 
 extension UIButton {
-    
     func shaking() {
         let shaking = CAKeyframeAnimation(keyPath: "position")
-        let newPosition1 = CGPoint(x: center.x, y: center.y + 5)
-        let newPosition2 = CGPoint(x: center.x, y: center.y - 5)
-        let newPosition3 = CGPoint(x: center.x - 5, y: center.y)
-        let newPosition4 = CGPoint(x: center.x + 5, y: center.y)
+        let newPosition1 = CGPoint(x: center.x, y: center.y + 1)
+        let newPosition2 = CGPoint(x: center.x, y: center.y - 1)
+        let newPosition3 = CGPoint(x: center.x - 1, y: center.y)
+        let newPosition4 = CGPoint(x: center.x + 1, y: center.y)
         shaking.values = [CGPoint(x: center.x, y: center.y),
                                 newPosition1,
                                 newPosition2,
@@ -23,8 +22,8 @@ extension UIButton {
                                 newPosition4]
         
         let rotateMove = CABasicAnimation(keyPath: "transform.rotation.z")
-        rotateMove.fromValue = -Double.pi/20
-        rotateMove.toValue = Double.pi/20
+        rotateMove.fromValue = -Double.pi/200
+        rotateMove.toValue = Double.pi/200
         rotateMove.isCumulative = true
         
         let group = CAAnimationGroup()

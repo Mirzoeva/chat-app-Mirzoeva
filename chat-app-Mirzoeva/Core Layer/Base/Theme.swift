@@ -11,6 +11,17 @@ enum Theme: Int {
     
     case classic, day, night
     
+    var title: String {
+        switch self {
+        case .classic:
+            return "Classic"
+        case .day:
+            return "Day"
+        case .night:
+            return "Night"
+        }
+    }
+    
     var mainColor: UIColor {
         switch self {
         case .classic:

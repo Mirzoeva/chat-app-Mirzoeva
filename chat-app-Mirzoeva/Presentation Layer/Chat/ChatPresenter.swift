@@ -12,6 +12,7 @@ import CoreData
 protocol ChatPresenter {
     func loadMessages(channelId: String, completion: @escaping ([MessageModel]) -> Void)
     func addMessage(content: String, senderId: String, senderName: String, channelId: String)
+    func deleteMessage(channelId: String, messageId: String)
 }
 
 class ChatPresenterImpl: ChatPresenter {
@@ -71,5 +72,8 @@ class ChatPresenterImpl: ChatPresenter {
             ]
         }
         reference.document(channelId).collection(L10n.Firebase.messages).addDocument(data: newMessage)
+    }
+    func deleteMessage(channelId: String, messageId: String) {
+        reference.document(channelId).collection(L10n.Firebase.messages).document(messageId).delete()
     }
 }

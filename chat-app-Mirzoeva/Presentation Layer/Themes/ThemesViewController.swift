@@ -18,17 +18,10 @@ class ThemesViewController: UIViewController {
 
     weak var delegate: ThemesViewControllerDelegate?
     var themeUpdateCompletion: ((Theme) -> Void)?
-
-    private let stackView = UIStackView()
-    private let classicThemeButton = UIButton()
-    private let classicThemeLabel = UILabel()
-    private let classicThemeStackView = UIStackView()
-    private let dayThemeButton = UIButton()
-    private let dayThemeLabel = UILabel()
-    private let dayThemeStackView = UIStackView()
-    private let nightThemeButton = UIButton()
-    private let nightThemeLabel = UILabel()
-    private let nightThemeStackView = UIStackView()
+    
+    private let classicThemeView = ChatThemeView(with: .classic)
+    private let dayThemeView = ChatThemeView(with: .day)
+    private let nightThemeView = ChatThemeView(with: .night)
 
     private lazy var classicGestureRecognizer: UITapGestureRecognizer = .init(target: self, action: #selector(didChooseClassicTheme))
     private lazy var dayGestureRecognizer: UITapGestureRecognizer = .init(target: self, action: #selector(didChooseDayTheme))
@@ -39,7 +32,7 @@ class ThemesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        setupButtons()
+        setupViews()
         layoutConstraints()
         setupCurrentTheme()
     }
@@ -47,9 +40,6 @@ class ThemesViewController: UIViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         view.backgroundColor = ThemeManager.currentTheme.backgroundColor
-        classicThemeLabel.textColor = ThemeManager.currentTheme.titleTextColor
-        dayThemeLabel.textColor = ThemeManager.currentTheme.titleTextColor
-        nightThemeLabel.textColor = ThemeManager.currentTheme.titleTextColor
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: ThemeManager.currentTheme.titleTextColor]
     }
 }
@@ -57,21 +47,20 @@ class ThemesViewController: UIViewController {
 // MARK: - Manage Themes
 
 private extension ThemesViewController {
-    
     func setupTheme(theme: Theme) {
         switch theme {
         case .classic:
-            dayThemeButton.layer.borderColor = UIColor.black.cgColor
-            classicThemeButton.layer.borderColor = UIColor.green.cgColor
-            nightThemeButton.layer.borderColor = UIColor.black.cgColor
+            classicThemeView.isChosen = true
+            dayThemeView.isChosen = false
+            nightThemeView.isChosen = false
         case .day:
-            dayThemeButton.layer.borderColor = UIColor.green.cgColor
-            classicThemeButton.layer.borderColor = UIColor.black.cgColor
-            nightThemeButton.layer.borderColor = UIColor.black.cgColor
+            dayThemeView.isChosen = true
+            classicThemeView.isChosen = false
+            nightThemeView.isChosen = false
         case .night:
-            classicThemeButton.layer.borderColor = UIColor.black.cgColor
-            dayThemeButton.layer.borderColor = UIColor.black.cgColor
-            nightThemeButton.layer.borderColor = UIColor.green.cgColor
+            nightThemeView.isChosen = true
+            dayThemeView.isChosen = false
+            classicThemeView.isChosen = false
         }
         themeUpdateCompletion?(theme)
         viewWillLayoutSubviews()
@@ -80,13 +69,13 @@ private extension ThemesViewController {
     func setupCurrentTheme() {
         switch ThemeManager.currentTheme {
         case .night:
-            nightThemeButton.layer.borderColor = UIColor.green.cgColor
+            nightThemeView.isChosen = true
             break
         case .day:
-            dayThemeButton.layer.borderColor = UIColor.green.cgColor
+            dayThemeView.isChosen = true
             break
         case .classic:
-            classicThemeButton.layer.borderColor = UIColor.green.cgColor
+            classicThemeView.isChosen = true
         }
     }
     
@@ -114,21 +103,20 @@ private extension ThemesViewController {
     func layoutConstraints() {
         NSLayoutConstraint.activate(
             [
-                classicThemeButton.heightAnchor.constraint(equalToConstant: 50),
-                classicThemeButton.centerXAnchor.constraint(equalTo: classicThemeStackView.centerXAnchor),
-                classicThemeLabel.centerXAnchor.constraint(equalTo: classicThemeStackView.centerXAnchor),
-
-                dayThemeButton.heightAnchor.constraint(equalToConstant: 50),
-                dayThemeButton.centerXAnchor.constraint(equalTo: dayThemeStackView.centerXAnchor),
-                dayThemeLabel.centerXAnchor.constraint(equalTo: dayThemeStackView.centerXAnchor),
+                classicThemeView.heightAnchor.constraint(equalToConstant: 100),
+                classicThemeView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: view.frame.height/5),
+                classicThemeView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: view.frame.width/6),
+                classicThemeView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -view.frame.width/6),
                 
-                nightThemeButton.heightAnchor.constraint(equalToConstant: 50),
-                nightThemeButton.centerXAnchor.constraint(equalTo: nightThemeStackView.centerXAnchor),
-                nightThemeLabel.centerXAnchor.constraint(equalTo: nightThemeStackView.centerXAnchor),
+                dayThemeView.heightAnchor.constraint(equalToConstant: 100),
+                dayThemeView.topAnchor.constraint(equalTo: classicThemeView.bottomAnchor, constant: 10),
+                dayThemeView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: view.frame.width/6),
+                dayThemeView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -view.frame.width/6),
                 
-                stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: view.frame.height/5),
-                stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: view.frame.width/6),
-                stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -view.frame.width/6)
+                nightThemeView.heightAnchor.constraint(equalToConstant: 100),
+                nightThemeView.topAnchor.constraint(equalTo: dayThemeView.bottomAnchor, constant: 10),
+                nightThemeView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: view.frame.width/6),
+                nightThemeView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -view.frame.width/6)
             ]
         )
     }
@@ -139,47 +127,18 @@ private extension ThemesViewController {
         navigationItem.rightBarButtonItem = cancelButton
     }
     
-    func setupButtons() {
-        [classicThemeButton, dayThemeButton, nightThemeButton].forEach {
+    func setupViews() {
+        [classicThemeView, dayThemeView, nightThemeView].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.layer.cornerRadius = 14
-            $0.layer.borderWidth = 1
-            $0.layer.borderColor = UIColor.black.cgColor
-            $0.layer.masksToBounds = true
+            view.addSubview($0)
         }
         
-        [classicThemeLabel, dayThemeLabel, nightThemeLabel].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.textAlignment = .center
-        }
+        classicThemeView.button.addTarget(self, action: #selector(didChooseClassicTheme), for: .touchUpInside)
+        dayThemeView.button.addTarget(self, action: #selector(didChooseDayTheme), for: .touchUpInside)
+        nightThemeView.button.addTarget(self, action: #selector(didChooseNightTheme), for: .touchUpInside)
         
-        classicThemeButton.backgroundColor = Colors.classicTheme.color
-        classicThemeButton.addTarget(self, action: #selector(didChooseClassicTheme), for: .touchUpInside)
-        classicThemeLabel.text = L10n.Themes.classic
-        
-        dayThemeButton.backgroundColor = Colors.dayTheme
-        dayThemeButton.addTarget(self, action: #selector(didChooseDayTheme), for: .touchUpInside)
-        dayThemeLabel.text = L10n.Themes.day
-        
-        nightThemeButton.backgroundColor = Colors.nightTheme.color
-        nightThemeButton.addTarget(self, action: #selector(didChooseNightTheme), for: .touchUpInside)
-        nightThemeLabel.text = L10n.Themes.night
-        
-        [classicThemeButton, classicThemeLabel].forEach { classicThemeStackView.addArrangedSubview($0) }
-        [dayThemeButton, dayThemeLabel].forEach { dayThemeStackView.addArrangedSubview($0) }
-        [nightThemeButton, nightThemeLabel].forEach { nightThemeStackView.addArrangedSubview($0) }
-        [classicThemeStackView, dayThemeStackView, nightThemeStackView].forEach { stackView.addArrangedSubview($0) }
-        
-        [classicThemeStackView, dayThemeStackView, nightThemeStackView, stackView].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.axis = .vertical
-            $0.spacing = view.frame.height / 30
-        }
-        
-        classicThemeStackView.addGestureRecognizer(classicGestureRecognizer)
-        dayThemeStackView.addGestureRecognizer(dayGestureRecognizer)
-        nightThemeStackView.addGestureRecognizer(nightGestureRecognizer)
-
-        view.addSubview(stackView)
+        classicThemeView.addGestureRecognizer(classicGestureRecognizer)
+        dayThemeView.addGestureRecognizer(dayGestureRecognizer)
+        nightThemeView.addGestureRecognizer(nightGestureRecognizer)
     }
 }

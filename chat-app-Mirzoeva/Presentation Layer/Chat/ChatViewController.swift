@@ -26,9 +26,7 @@ class ChatViewController: UIViewController {
     
     private var channelId: String
     private let cellId = "MessageViewCellId"
-    
-    private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
-    
+        
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.rowHeight = UITableView.automaticDimension
@@ -53,7 +51,6 @@ class ChatViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initializeFetchedResultsController()
         presenter.loadMessages(channelId: channelId) { [weak self] data in
             guard let self = self else { return }
             self.messages = data
@@ -69,28 +66,6 @@ class ChatViewController: UIViewController {
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: ThemeManager.currentTheme.titleTextColor]    }
     
     // MARK: - Private
-    
-    private func initializeFetchedResultsController() {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: L10n.CoreData.DBMessage)
-        request.predicate = NSPredicate(format: "channel.identifier = %@", channelId)
-        
-        let createdSort = NSSortDescriptor(key: L10n.CoreData.created, ascending: true)
-        request.sortDescriptors = [createdSort]
-        
-        fetchedResultsController = NSFetchedResultsController(
-            fetchRequest: request,
-            managedObjectContext: coreDataStack.context,
-            sectionNameKeyPath: nil,
-            cacheName: nil
-        )
-        fetchedResultsController.delegate = self
-        
-        do {
-            try fetchedResultsController.performFetch()
-        } catch {
-            print("Failed to initialize FetchedResultsController: \(error)")
-        }
-    }
     
     private func setup() {
         [tableView, newMessageTextField].forEach {
@@ -148,6 +123,12 @@ class ChatViewController: UIViewController {
             var name = "unknown"
             if (userInfo.name != nil) {
                 name = userInfo.name!
+                self.presenter.addMessage(
+                    content: content,
+                    senderId: senderId,
+                    senderName: name,
+                    channelId: self.channelId)
+                self.newMessageTextField.text = ""
             } else {
                 self.addNameAlert() { text in
                     if let textUserEntered = text {
@@ -204,12 +185,7 @@ extension ChatViewController: UITextFieldDelegate {
 
 extension ChatViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let sections = fetchedResultsController.sections
-        else {
-            print("No sections in fetchedResultsController")
-            return 0
-        }
-        return sections[section].numberOfObjects
+        return messages.count
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -217,19 +193,13 @@ extension ChatViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard
-            let cell = tableView.dequeueReusableCell(withIdentifier: cellId) as? MessageViewCell,
-            let dbMessage = fetchedResultsController.object(at: indexPath) as? DBMessage,
-            let content = dbMessage.content,
-            let created = dbMessage.created,
-            let senderId = dbMessage.senderId,
-            let senderName = dbMessage.senderName
-        else { return UITableViewCell() }
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId) as! MessageViewCell
+        let channel = messages[indexPath.row]
         let message = MessageModel(
-            content: content,
-            created: created,
-            senderId: senderId,
-            senderName: senderName
+            content: channel.content,
+            created: channel.created,
+            senderId: channel.senderId,
+            senderName: channel.senderName
         )
         cell.model = message
         cell.backgroundColor = ThemeManager.currentTheme.secondaryColor
@@ -239,67 +209,11 @@ extension ChatViewController: UITableViewDataSource {
     }
 }
 
-// MARK: - NSFetchedResultsControllerDelegate
-
-extension ChatViewController: NSFetchedResultsControllerDelegate {
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, sectionIndexTitleForSectionName sectionName: String) -> String? {
-        return sectionName
-    }
-    
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.beginUpdates()
-    }
-    
-    func controller(controller: NSFetchedResultsController<NSFetchRequestResult>, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
-        switch type {
-        case .insert:
-            tableView.insertSections(NSIndexSet(index: sectionIndex) as IndexSet, with: .fade)
-        case .delete:
-            tableView.deleteSections(NSIndexSet(index: sectionIndex) as IndexSet, with: .fade)
-        default:
-            return
-        }
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        switch type {
-        case .insert:
-            if let indexPath = newIndexPath as IndexPath? {
-                tableView.insertRows(at: [indexPath], with: .automatic)
-            }
-        case .update:
-            if let indexPath = indexPath as IndexPath? {
-                let message = fetchedResultsController.object(at: indexPath) as? DBMessage
-                guard let cell = tableView.cellForRow(at: indexPath as IndexPath) as? MessageViewCell,
-                      let content = message?.content,
-                      let created = message?.created,
-                      let senderId = message?.senderId,
-                      let senderName = message?.senderName else { break }
-                let cellMessage = MessageModel(
-                    content: content,
-                    created: created,
-                    senderId: senderId,
-                    senderName: senderName
-                )
-                cell.model = cellMessage
-            }
-        case .move:
-            if let indexPath = indexPath as IndexPath? {
-                tableView.deleteRows(at: [indexPath], with: .automatic)
-            }
-            if let newIndexPath = newIndexPath as IndexPath? {
-                tableView.insertRows(at: [newIndexPath], with: .automatic)
-            }
-        case .delete:
-            if let indexPath = indexPath as IndexPath? {
-                tableView.deleteRows(at: [indexPath], with: .automatic)
-            }
-        @unknown default:
-            return
-        }
-    }
-    
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.endUpdates()
+extension ChatViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        guard editingStyle == .delete else { return }
+        
+        // Добавь айди
+//        presenter.deleteMessage(channelId: channelId, messageId: messages[indexPath.row])
     }
 }

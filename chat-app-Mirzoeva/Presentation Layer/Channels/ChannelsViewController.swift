@@ -20,7 +20,6 @@ class ChannelsViewController: UIViewController {
         }
     }
     private var coreDataStack: CoreDataService
-    private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
     private var presenter: ChannelsPresenter
     
     private lazy var tableView: UITableView = {
@@ -50,7 +49,6 @@ class ChannelsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initializeFetchedResultsController()
         setup()
         presenter.loadChats { [weak self] data in
             guard let self = self else { return }
@@ -69,27 +67,6 @@ class ChannelsViewController: UIViewController {
     }
     
     // MARK: - Private
-    
-    private func initializeFetchedResultsController() {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: L10n.CoreData.DBChannel)
-        
-        let createdSort = NSSortDescriptor(key: L10n.CoreData.lastActivity, ascending: true)
-        request.sortDescriptors = [createdSort]
-        
-        fetchedResultsController = NSFetchedResultsController(
-            fetchRequest: request,
-            managedObjectContext: coreDataStack.context,
-            sectionNameKeyPath: nil,
-            cacheName: nil
-        )
-        fetchedResultsController.delegate = self
-        
-        do {
-            try fetchedResultsController.performFetch()
-        } catch {
-            print("Failed to initialize FetchedResultsController: \(error)")
-        }
-    }
     
     private func setup() {
         view.addSubview(tableView)
@@ -169,80 +146,11 @@ class ChannelsViewController: UIViewController {
         present(alert, animated: true)
     }
 }
-
-// MARK: - NSFetchedResultsControllerDelegate
-
-extension ChannelsViewController: NSFetchedResultsControllerDelegate {
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, sectionIndexTitleForSectionName sectionName: String) -> String? {
-        return sectionName
-    }
-    
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.beginUpdates()
-    }
-    
-    func controller(controller: NSFetchedResultsController<NSFetchRequestResult>, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
-            switch type {
-            case .insert:
-                tableView.insertSections(NSIndexSet(index: sectionIndex) as IndexSet, with: .fade)
-            case .delete:
-                tableView.deleteSections(NSIndexSet(index: sectionIndex) as IndexSet, with: .fade)
-            default:
-                return
-            }
-        }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        switch type {
-        case .insert:
-            if let indexPath = newIndexPath as IndexPath? {
-                tableView.insertRows(at: [indexPath], with: .automatic)
-            }
-        case .update:
-            if let indexPath = indexPath as IndexPath? {
-                let channel = fetchedResultsController.object(at: indexPath) as? DBChannel
-                guard let cell = tableView.cellForRow(at: indexPath as IndexPath) as? ChannelViewCell,
-                      let identifier = channel?.identifier,
-                      let name = channel?.name,
-                      let lastMessage = channel?.lastMessage,
-                      let lastActivity = channel?.lastActivity else { break }
-                let cellChannel = ChannelModel(
-                    identifier: identifier,
-                    name: name,
-                    lastMessage: lastMessage,
-                    lastActivity: lastActivity)
-                cell.model = cellChannel
-            }
-        case .move:
-            if let indexPath = indexPath as IndexPath? {
-                tableView.deleteRows(at: [indexPath], with: .automatic)
-            }
-            if let newIndexPath = newIndexPath as IndexPath? {
-                tableView.insertRows(at: [newIndexPath], with: .automatic)
-            }
-        case .delete:
-            if let indexPath = indexPath as IndexPath? {
-                tableView.deleteRows(at: [indexPath], with: .automatic)
-            }
-        @unknown default:
-            return
-        }
-    }
-    
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-            tableView.endUpdates()
-    }
-}
-
 // MARK: - UITableViewDataSource
 
 extension ChannelsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let sections = fetchedResultsController.sections else {
-            print("No sections in fetchedResultsController")
-            return 0
-        }
-        return sections[section].numberOfObjects
+        return chatSectionsData.count
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -250,19 +158,13 @@ extension ChannelsViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard
-            let cell = tableView.dequeueReusableCell(withIdentifier: cellId) as? ChannelViewCell,
-            let dbChannel = fetchedResultsController.object(at: indexPath) as? DBChannel,
-            let identifier = dbChannel.identifier,
-            let name = dbChannel.name,
-            let lastMessage = dbChannel.lastMessage,
-            let lastActivity = dbChannel.lastActivity
-        else { return UITableViewCell() }
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId) as! ChannelViewCell
+        let channel = chatSectionsData[indexPath.row]
         let message = ChannelModel(
-            identifier: identifier,
-            name: name,
-            lastMessage: lastMessage,
-            lastActivity: lastActivity
+            identifier: channel.identifier,
+            name: channel.name,
+            lastMessage: channel.lastMessage,
+            lastActivity: channel.lastActivity
         )
         cell.model = message
         return cell
@@ -274,19 +176,30 @@ extension ChannelsViewController: UITableViewDataSource {
 
 extension ChannelsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard
-            let channel = fetchedResultsController.object(at: indexPath) as? DBChannel,
-            let identifier = channel.identifier,
-            let name = channel.name else { return }
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId) as! ChannelViewCell
+        let channel = chatSectionsData[indexPath.row]
+        let message = ChannelModel(
+            identifier: channel.identifier,
+            name: channel.name,
+            lastMessage: channel.lastMessage,
+            lastActivity: channel.lastActivity
+        )
+        cell.model = message
         let presenter = ChatPresenterImpl(coreDataStack: coreDataStack)
         let chatViewController = ChatViewController(
             nibName: nil, bundle: nil,
-            id: identifier,
+            id: channel.identifier,
             coreDataStack: coreDataStack,
             presenter: presenter)
-        chatViewController.title = name
+        chatViewController.title = channel.name
         self.navigationController?.pushViewController(chatViewController, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        guard editingStyle == .delete else { return }
+        
+        presenter.deleteChannel(channelId: chatSectionsData[indexPath.row].identifier)
     }
 }
 

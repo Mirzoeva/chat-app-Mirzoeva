@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21E258" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21G83" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="DBChannel" representedClassName="DBChannel" syncable="YES" codeGenerationType="class">
         <attribute name="identifier" optional="YES" attributeType="String"/>
         <attribute name="lastActivity" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -26,7 +26,7 @@
         </uniquenessConstraints>
     </entity>
     <elements>
-        <element name="DBChannel" positionX="175.1766357421875" positionY="2077.262573242188" width="128" height="104"/>
+        <element name="DBChannel" positionX="175.1766357421875" positionY="2077.262573242188" width="128" height="14"/>
         <element name="DBMessage" positionX="415.98583984375" positionY="2076.990844726562" width="128" height="118"/>
     </elements>
 </model>

@@ -10,24 +10,37 @@
 		0BB3410B538AEBC2D41791BB /* Pods_chat_app_Mirzoeva.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F15C3F524168B1CDD143C9AC /* Pods_chat_app_Mirzoeva.framework */; };
 		A107E07E2805D4510077B6B3 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A107E07C2805D4510077B6B3 /* CoreDataModel.xcdatamodeld */; };
 		A107E0822805EE410077B6B3 /* NewCoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A107E0812805EE410077B6B3 /* NewCoreDataService.swift */; };
+		A109186028F0DB1E009BBFD5 /* ChatProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A109185F28F0DB1E009BBFD5 /* ChatProfileImageView.swift */; };
+		A109186228F0DF4F009BBFD5 /* ChatProfileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A109186128F0DF4E009BBFD5 /* ChatProfileInfoView.swift */; };
 		A11849562811FAFD006FC2DE /* NetworkServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11849552811FAFD006FC2DE /* NetworkServiceImpl.swift */; };
 		A11849592811FB2D006FC2DE /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11849582811FB2D006FC2DE /* CoreDataService.swift */; };
 		A118495B2811FB8D006FC2DE /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A118495A2811FB8D006FC2DE /* NetworkService.swift */; };
+		A133F626290A6A1D001EFF8F /* ChatActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A133F625290A6A1D001EFF8F /* ChatActionButton.swift */; };
 		A1610F00281ECF8700590766 /* ChannelsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1610EFF281ECF8700590766 /* ChannelsPresenter.swift */; };
 		A1610F02281ED7E200590766 /* ChatPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1610F01281ED7E200590766 /* ChatPresenter.swift */; };
+		A16130DA28F25037002E9F7F /* ChatUpdatePhotoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16130D928F25037002E9F7F /* ChatUpdatePhotoButton.swift */; };
+		A16130DC28F2523D002E9F7F /* ChatPhotoInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16130DB28F2523D002E9F7F /* ChatPhotoInfoViewController.swift */; };
 		A1662D4C27C672AC00DCCA92 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1662D4B27C672AC00DCCA92 /* AppDelegate.swift */; };
 		A1662D5027C672AC00DCCA92 /* ChannelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1662D4F27C672AC00DCCA92 /* ChannelsViewController.swift */; };
 		A1662D5527C672AE00DCCA92 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1662D5427C672AE00DCCA92 /* Assets.xcassets */; };
 		A1662D5827C672AE00DCCA92 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1662D5627C672AE00DCCA92 /* LaunchScreen.storyboard */; };
-		A1662D7C27C6AFBA00DCCA92 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1662D7B27C6AFBA00DCCA92 /* Logger.swift */; };
 		A16833AF2806189000E622C3 /* ThemesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16833AE2806189000E622C3 /* ThemesViewController.swift */; };
-		A182579727F92061004929B0 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A182579627F92061004929B0 /* Strings.swift */; };
+		A182579727F92061004929B0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A182579627F92061004929B0 /* Constants.swift */; };
 		A182579927F927B9004929B0 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A182579827F927B9004929B0 /* UserInfo.swift */; };
 		A186456727FF1B5200227877 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A186456627FF1B5200227877 /* GoogleService-Info.plist */; };
 		A186456927FF61F200227877 /* UserInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A186456827FF61F200227877 /* UserInfoManager.swift */; };
+		A19B6BB228EF815200E58F89 /* ChatTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19B6BB128EF815200E58F89 /* ChatTitleLabel.swift */; };
+		A19B6BB428EF817800E58F89 /* ChatBodyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19B6BB328EF817800E58F89 /* ChatBodyLabel.swift */; };
+		A19B6BB628EF819700E58F89 /* ChatSecondaryTitleLable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19B6BB528EF819700E58F89 /* ChatSecondaryTitleLable.swift */; };
+		A19B6BB928EF821200E58F89 /* ChatTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19B6BB828EF821200E58F89 /* ChatTextField.swift */; };
+		A19B6BBB28EF825500E58F89 /* ChatThemesButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19B6BBA28EF825500E58F89 /* ChatThemesButton.swift */; };
+		A19B6BBD28EF832900E58F89 /* ChatThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19B6BBC28EF832900E58F89 /* ChatThemeView.swift */; };
+		A1A8A1E3290A71FB0055D2F1 /* ChatEmitterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A8A1E2290A71FB0055D2F1 /* ChatEmitterCell.swift */; };
+		A1A8A1E5290A73D30055D2F1 /* ChatAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A8A1E4290A73D30055D2F1 /* ChatAlertViewController.swift */; };
+		A1A8A1E7290A74220055D2F1 /* ChatAlertContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A8A1E6290A74220055D2F1 /* ChatAlertContainerView.swift */; };
+		A1A8A1E9290A76000055D2F1 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A8A1E8290A76000055D2F1 /* UIViewController+Extension.swift */; };
 		A1B78CB427F398FA00431A67 /* SettingsFileManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B78CB327F398FA00431A67 /* SettingsFileManagerProtocol.swift */; };
 		A1B78CB627F3999E00431A67 /* GCDFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B78CB527F3999E00431A67 /* GCDFileManager.swift */; };
-		A1B78CB827F399B600431A67 /* OperationFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B78CB727F399B600431A67 /* OperationFileManager.swift */; };
 		A1C0402D27D06B6D00417168 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C0402C27D06B6D00417168 /* ProfileViewController.swift */; };
 		A1D71CF12821F12E005083EE /* Button+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D71CF02821F12E005083EE /* Button+Extension.swift */; };
 		A1DD49F627E3625500178638 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DD49F527E3625500178638 /* UIColor+Extensions.swift */; };
@@ -37,7 +50,6 @@
 		A1DD4A0127E3896300178638 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1DD4A0027E3896300178638 /* Colors.xcassets */; };
 		A1FFC70C27D96EDC00F345BA /* ChannelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FFC70B27D96EDC00F345BA /* ChannelViewCell.swift */; };
 		A1FFC70E27D97C8E00F345BA /* ChannelModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FFC70D27D97C8E00F345BA /* ChannelModel.swift */; };
-		A1FFC71027D97EC500F345BA /* FakeNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FFC70F27D97EC500F345BA /* FakeNetworkService.swift */; };
 		A1FFC71227D98C1500F345BA /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FFC71127D98C1500F345BA /* ChatViewController.swift */; };
 		A1FFC71427DA2FD000F345BA /* MessageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FFC71327DA2FCF00F345BA /* MessageViewCell.swift */; };
 		A1FFC71727DA342500F345BA /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FFC71627DA342500F345BA /* MessageModel.swift */; };
@@ -64,11 +76,16 @@
 		35FD0DABD3B37A443054F4A2 /* Pods-chat-app-Mirzoeva.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chat-app-Mirzoeva.debug.xcconfig"; path = "Target Support Files/Pods-chat-app-Mirzoeva/Pods-chat-app-Mirzoeva.debug.xcconfig"; sourceTree = "<group>"; };
 		A107E07D2805D4510077B6B3 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
 		A107E0812805EE410077B6B3 /* NewCoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCoreDataService.swift; sourceTree = "<group>"; };
+		A109185F28F0DB1E009BBFD5 /* ChatProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatProfileImageView.swift; sourceTree = "<group>"; };
+		A109186128F0DF4E009BBFD5 /* ChatProfileInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatProfileInfoView.swift; sourceTree = "<group>"; };
 		A11849552811FAFD006FC2DE /* NetworkServiceImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceImpl.swift; sourceTree = "<group>"; };
 		A11849582811FB2D006FC2DE /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
 		A118495A2811FB8D006FC2DE /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		A133F625290A6A1D001EFF8F /* ChatActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatActionButton.swift; sourceTree = "<group>"; };
 		A1610EFF281ECF8700590766 /* ChannelsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelsPresenter.swift; sourceTree = "<group>"; };
 		A1610F01281ED7E200590766 /* ChatPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatPresenter.swift; sourceTree = "<group>"; };
+		A16130D928F25037002E9F7F /* ChatUpdatePhotoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatUpdatePhotoButton.swift; sourceTree = "<group>"; };
+		A16130DB28F2523D002E9F7F /* ChatPhotoInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatPhotoInfoViewController.swift; sourceTree = "<group>"; };
 		A1662D4827C672AC00DCCA92 /* chat-app-Mirzoeva.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "chat-app-Mirzoeva.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1662D4B27C672AC00DCCA92 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A1662D4F27C672AC00DCCA92 /* ChannelsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelsViewController.swift; sourceTree = "<group>"; };
@@ -77,15 +94,23 @@
 		A1662D5927C672AE00DCCA92 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A1662D5E27C672AF00DCCA92 /* chat-app-MirzoevaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "chat-app-MirzoevaTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1662D6827C672AF00DCCA92 /* chat-app-MirzoevaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "chat-app-MirzoevaUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A1662D7B27C6AFBA00DCCA92 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		A16833AE2806189000E622C3 /* ThemesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemesViewController.swift; sourceTree = "<group>"; };
-		A182579627F92061004929B0 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
+		A182579627F92061004929B0 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A182579827F927B9004929B0 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		A186456627FF1B5200227877 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A186456827FF61F200227877 /* UserInfoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoManager.swift; sourceTree = "<group>"; };
+		A19B6BB128EF815200E58F89 /* ChatTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTitleLabel.swift; sourceTree = "<group>"; };
+		A19B6BB328EF817800E58F89 /* ChatBodyLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBodyLabel.swift; sourceTree = "<group>"; };
+		A19B6BB528EF819700E58F89 /* ChatSecondaryTitleLable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSecondaryTitleLable.swift; sourceTree = "<group>"; };
+		A19B6BB828EF821200E58F89 /* ChatTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTextField.swift; sourceTree = "<group>"; };
+		A19B6BBA28EF825500E58F89 /* ChatThemesButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatThemesButton.swift; sourceTree = "<group>"; };
+		A19B6BBC28EF832900E58F89 /* ChatThemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatThemeView.swift; sourceTree = "<group>"; };
+		A1A8A1E2290A71FB0055D2F1 /* ChatEmitterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatEmitterCell.swift; sourceTree = "<group>"; };
+		A1A8A1E4290A73D30055D2F1 /* ChatAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatAlertViewController.swift; sourceTree = "<group>"; };
+		A1A8A1E6290A74220055D2F1 /* ChatAlertContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatAlertContainerView.swift; sourceTree = "<group>"; };
+		A1A8A1E8290A76000055D2F1 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		A1B78CB327F398FA00431A67 /* SettingsFileManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFileManagerProtocol.swift; sourceTree = "<group>"; };
 		A1B78CB527F3999E00431A67 /* GCDFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GCDFileManager.swift; sourceTree = "<group>"; };
-		A1B78CB727F399B600431A67 /* OperationFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationFileManager.swift; sourceTree = "<group>"; };
 		A1C0402C27D06B6D00417168 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		A1D71CF02821F12E005083EE /* Button+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Button+Extension.swift"; sourceTree = "<group>"; };
 		A1DD49F527E3625500178638 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
@@ -95,7 +120,6 @@
 		A1DD4A0027E3896300178638 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		A1FFC70B27D96EDC00F345BA /* ChannelViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelViewCell.swift; sourceTree = "<group>"; };
 		A1FFC70D27D97C8E00F345BA /* ChannelModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelModel.swift; sourceTree = "<group>"; };
-		A1FFC70F27D97EC500F345BA /* FakeNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeNetworkService.swift; sourceTree = "<group>"; };
 		A1FFC71127D98C1500F345BA /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		A1FFC71327DA2FCF00F345BA /* MessageViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewCell.swift; sourceTree = "<group>"; };
 		A1FFC71627DA342500F345BA /* MessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
@@ -141,8 +165,8 @@
 		A118494C2811F452006FC2DE /* Presentation Layer */ = {
 			isa = PBXGroup;
 			children = (
-				A11849542811F59A006FC2DE /* Profile */,
 				A11849532811F58F006FC2DE /* Themes */,
+				A11849542811F59A006FC2DE /* Profile */,
 				A118494F2811F4B7006FC2DE /* Channels */,
 				A11849502811F4C5006FC2DE /* Chat */,
 			);
@@ -154,10 +178,8 @@
 			children = (
 				A11849572811FB0E006FC2DE /* Protocols */,
 				A1B78CB527F3999E00431A67 /* GCDFileManager.swift */,
-				A1B78CB727F399B600431A67 /* OperationFileManager.swift */,
 				A1DD49FA27E3632200178638 /* ThemeManager.swift */,
 				A186456827FF61F200227877 /* UserInfoManager.swift */,
-				A1FFC70F27D97EC500F345BA /* FakeNetworkService.swift */,
 				A107E0812805EE410077B6B3 /* NewCoreDataService.swift */,
 				A11849552811FAFD006FC2DE /* NetworkServiceImpl.swift */,
 			);
@@ -274,15 +296,61 @@
 			path = "chat-app-Mirzoeva";
 			sourceTree = "<group>";
 		};
+		A19B6BB728EF81A600E58F89 /* Labels */ = {
+			isa = PBXGroup;
+			children = (
+				A19B6BB528EF819700E58F89 /* ChatSecondaryTitleLable.swift */,
+				A19B6BB328EF817800E58F89 /* ChatBodyLabel.swift */,
+				A19B6BB128EF815200E58F89 /* ChatTitleLabel.swift */,
+			);
+			path = Labels;
+			sourceTree = "<group>";
+		};
+		A1A8A1E0290A709F0055D2F1 /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				A19B6BBA28EF825500E58F89 /* ChatThemesButton.swift */,
+				A16130D928F25037002E9F7F /* ChatUpdatePhotoButton.swift */,
+				A133F625290A6A1D001EFF8F /* ChatActionButton.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
+		A1A8A1E1290A70AA0055D2F1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A19B6BBC28EF832900E58F89 /* ChatThemeView.swift */,
+				A109186128F0DF4E009BBFD5 /* ChatProfileInfoView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A1A8A1EA290A769F0055D2F1 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A1DD49F527E3625500178638 /* UIColor+Extensions.swift */,
+				A1D71CF02821F12E005083EE /* Button+Extension.swift */,
+				A1A8A1E8290A76000055D2F1 /* UIViewController+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		A1DD49F927E362CE00178638 /* Base */ = {
 			isa = PBXGroup;
 			children = (
 				A1DD49FE27E3882F00178638 /* Colors.swift */,
-				A1DD49F527E3625500178638 /* UIColor+Extensions.swift */,
-				A1662D7B27C6AFBA00DCCA92 /* Logger.swift */,
 				A1DD49F727E362A000178638 /* Theme.swift */,
-				A182579627F92061004929B0 /* Strings.swift */,
-				A1D71CF02821F12E005083EE /* Button+Extension.swift */,
+				A182579627F92061004929B0 /* Constants.swift */,
+				A1A8A1EA290A769F0055D2F1 /* Extensions */,
+				A1A8A1E0290A709F0055D2F1 /* Buttons */,
+				A19B6BB728EF81A600E58F89 /* Labels */,
+				A1A8A1E1290A70AA0055D2F1 /* Views */,
+				A19B6BB828EF821200E58F89 /* ChatTextField.swift */,
+				A109185F28F0DB1E009BBFD5 /* ChatProfileImageView.swift */,
+				A16130DB28F2523D002E9F7F /* ChatPhotoInfoViewController.swift */,
+				A1A8A1E2290A71FB0055D2F1 /* ChatEmitterCell.swift */,
+				A1A8A1E4290A73D30055D2F1 /* ChatAlertViewController.swift */,
+				A1A8A1E6290A74220055D2F1 /* ChatAlertContainerView.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -471,17 +539,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A19B6BB428EF817800E58F89 /* ChatBodyLabel.swift in Sources */,
 				A1662D5027C672AC00DCCA92 /* ChannelsViewController.swift in Sources */,
 				A1DD49FF27E3882F00178638 /* Colors.swift in Sources */,
 				A1610F00281ECF8700590766 /* ChannelsPresenter.swift in Sources */,
 				A107E07E2805D4510077B6B3 /* CoreDataModel.xcdatamodeld in Sources */,
+				A1A8A1E7290A74220055D2F1 /* ChatAlertContainerView.swift in Sources */,
+				A109186028F0DB1E009BBFD5 /* ChatProfileImageView.swift in Sources */,
+				A1A8A1E3290A71FB0055D2F1 /* ChatEmitterCell.swift in Sources */,
 				A11849562811FAFD006FC2DE /* NetworkServiceImpl.swift in Sources */,
-				A1662D7C27C6AFBA00DCCA92 /* Logger.swift in Sources */,
 				A1FFC71227D98C1500F345BA /* ChatViewController.swift in Sources */,
-				A1B78CB827F399B600431A67 /* OperationFileManager.swift in Sources */,
-				A182579727F92061004929B0 /* Strings.swift in Sources */,
-				A1FFC71027D97EC500F345BA /* FakeNetworkService.swift in Sources */,
+				A182579727F92061004929B0 /* Constants.swift in Sources */,
 				A1B78CB427F398FA00431A67 /* SettingsFileManagerProtocol.swift in Sources */,
+				A133F626290A6A1D001EFF8F /* ChatActionButton.swift in Sources */,
 				A16833AF2806189000E622C3 /* ThemesViewController.swift in Sources */,
 				A1D71CF12821F12E005083EE /* Button+Extension.swift in Sources */,
 				A182579927F927B9004929B0 /* UserInfo.swift in Sources */,
@@ -492,14 +562,24 @@
 				A1FFC70C27D96EDC00F345BA /* ChannelViewCell.swift in Sources */,
 				A1FFC71727DA342500F345BA /* MessageModel.swift in Sources */,
 				A1FFC70E27D97C8E00F345BA /* ChannelModel.swift in Sources */,
+				A19B6BBB28EF825500E58F89 /* ChatThemesButton.swift in Sources */,
+				A19B6BB228EF815200E58F89 /* ChatTitleLabel.swift in Sources */,
 				A1DD49F627E3625500178638 /* UIColor+Extensions.swift in Sources */,
+				A16130DC28F2523D002E9F7F /* ChatPhotoInfoViewController.swift in Sources */,
+				A1A8A1E9290A76000055D2F1 /* UIViewController+Extension.swift in Sources */,
 				A107E0822805EE410077B6B3 /* NewCoreDataService.swift in Sources */,
 				A1C0402D27D06B6D00417168 /* ProfileViewController.swift in Sources */,
 				A1662D4C27C672AC00DCCA92 /* AppDelegate.swift in Sources */,
 				A186456927FF61F200227877 /* UserInfoManager.swift in Sources */,
+				A1A8A1E5290A73D30055D2F1 /* ChatAlertViewController.swift in Sources */,
 				A1FFC71427DA2FD000F345BA /* MessageViewCell.swift in Sources */,
 				A1610F02281ED7E200590766 /* ChatPresenter.swift in Sources */,
+				A19B6BBD28EF832900E58F89 /* ChatThemeView.swift in Sources */,
+				A109186228F0DF4F009BBFD5 /* ChatProfileInfoView.swift in Sources */,
+				A19B6BB628EF819700E58F89 /* ChatSecondaryTitleLable.swift in Sources */,
+				A16130DA28F25037002E9F7F /* ChatUpdatePhotoButton.swift in Sources */,
 				A1DD49FB27E3632200178638 /* ThemeManager.swift in Sources */,
+				A19B6BB928EF821200E58F89 /* ChatTextField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -596,9 +676,14 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				LLVM_LTO = NO;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"$(OTHER_LDFLAGS)",
+					"-ObjC",
+				);
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -651,8 +736,13 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				LLVM_LTO = NO;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = (
+					"$(OTHER_LDFLAGS)",
+					"-ObjC",
+				);
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -671,8 +761,8 @@
 				DEVELOPMENT_TEAM = X849TB5KSP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "chat-app-Mirzoeva/Info.plist";
-				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) camera use";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "$(PRODUCT_NAME) photo use";
+				INFOPLIST_KEY_NSCameraUsageDescription = "chat-app-Mirzoeva camera use";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "chat-app-Mirzoeva photo use";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -684,7 +774,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ru.tinkoff.TinkoffChat;
+				PRODUCT_BUNDLE_IDENTIFIER = "chat-Mirzoeva";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -703,8 +793,8 @@
 				DEVELOPMENT_TEAM = X849TB5KSP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "chat-app-Mirzoeva/Info.plist";
-				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) camera use";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "$(PRODUCT_NAME) photo use";
+				INFOPLIST_KEY_NSCameraUsageDescription = "chat-app-Mirzoeva camera use";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "chat-app-Mirzoeva photo use";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -716,7 +806,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ru.tinkoff.TinkoffChat;
+				PRODUCT_BUNDLE_IDENTIFIER = "chat-Mirzoeva";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

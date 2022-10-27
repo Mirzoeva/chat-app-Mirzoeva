@@ -81,7 +81,6 @@ class NetworkServiceImpl: NetworkService {
             L10n.CoreData.created: Timestamp(date: Date()),
             L10n.CoreData.senderId: senderId,
             L10n.CoreData.name: name
-            
         ]
         reference
             .document(channelId)
